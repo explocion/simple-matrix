@@ -50,27 +50,21 @@ public:
     assert(row < Row && col < Col);
     return (*this)[serializeIndex(row, col)];
   }
-};
-
-template <typename T, SizeType N, bool RowMajor = false>
-class SimpleVector : public SimpleMatrix<T, N, 1, RowMajor> {
-public:
-  using Self = SimpleVector<T, N, RowMajor>;
-  using Base = SimpleMatrix<T, N, 1>;
-  using ElementType = T;
-  static constexpr auto Rows = N;
-  static constexpr auto Cols = 1;
-  static constexpr auto RowMajorOverride = RowMajor;
 
   __host__ __device__ inline T &operator()(SizeType index) {
-    assert(index < N);
+    static_assert(Row == 1 || Col == 1);
+    assert(index < Row && index < Col);
     return (*this)[index];
   }
 
   __host__ __device__ inline const T &operator()(SizeType index) const {
-    assert(index < N);
+    static_assert(Row == 1 || Col == 1);
+    assert(index < Row && index < Col);
     return (*this)[index];
   }
 };
+
+template <typename T, SizeType N, bool RowMajor = false>
+using SimpleVector = SimpleMatrix<T, N, 1, RowMajor>;
 
 #endif
