@@ -2,6 +2,9 @@
 #define __DeviceMatrixBase_h__
 
 #include <cooperative_groups.h>
+#ifdef CUDA_EIGEN_EXTEND
+#include <Eigen/Dense>
+#endif
 
 // Interface for changing SizeType
 #ifndef SIZE_TYPE
