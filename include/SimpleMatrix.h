@@ -45,6 +45,10 @@ public:
     assert(index < Row && index < Col);
     return (*this)[index];
   }
+
+  __host__ __device__ static constexpr SizeType rows(void) { return Rows; }
+
+  __host__ __device__ static constexpr SizeType cols(void) { return Cols; }
 };
 
 template <typename T, SizeType N, bool RowMajor = false>
