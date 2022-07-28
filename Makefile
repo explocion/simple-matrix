@@ -9,7 +9,9 @@ SOURCES:=$(wildcard src/*.cu)
 CXX_TESTS:=$(wildcard test/*.cpp)
 TESTS:=$(wildcard test/*.cu)
 
-.PHONY: all tests compdb clean
+PREFIX=./env
+
+.PHONY: all tests compdb clean install
 
 all: compdb tests
 
@@ -24,6 +26,11 @@ compdb: Makefile
 
 clean:
 	rm -f build/*
+
+install: ${HEADERS}
+	rm -rf ${PREFIX}/include/SimpleMatrix
+	mkdir ${PREFIX}/include/SimpleMatrix
+	cp include/* ${PREFIX}/include/SimpleMatrix
 
 ${TESTS:test/%.cu=build/%}: build/%: test/%.cu ${SOURCES:src/%.cu=build/%.o} ${CXX_SOURCES:src/%.cpp=build/%.o}
 	${CC} ${FLAGS} ${CUDA_FLAGS} -o $@ $^
