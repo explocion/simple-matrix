@@ -145,4 +145,20 @@ public:
 #endif
 };
 
+template <SizeType Row, SizeType Col, SizeType SizeOverride = Row *Col,
+          SizeType IntendedLanes = 0>
+class UngroupedMatrixContext {
+public:
+  static constexpr SizeType Size = SizeOverride;
+  const MatrixIndex<Row, Col> index;
+
+  __host__ __device__ UngroupedMatrixContext()
+      : index(cooperative_groups::thread_block::thread_rank()) {
+#ifndef NDEBUG
+    assert((IntendedLanes == 0) ||
+           (cooperative_groups::thread_block::size() / Size == IntendedLanes));
+#endif
+  }
+};
+
 #endif
